@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Estudio Interactivo de Angular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .prose pre {
+            background-color: #1f2937; /* gray-800 */
+            color: #f3f4f6; /* gray-100 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .prose code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .result-correct {
+            border-left: 4px solid #4ade80; /* green-400 */
+        }
+        .result-incorrect {
+            border-left: 4px solid #f87171; /* red-400 */
+        }
+        .label-correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .label-incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Plan de Estudio Interactivo de Angular</h1>
+            <p class="mt-2 text-lg text-gray-600">Tu guía de preparación para el examen CNSC</p>
+        </header>
+
+        <main id="study-plan" class="space-y-4">
+            <!-- El contenido del plan de estudio se generará aquí -->
+        </main>
+    </div>
+
+    <script>
+        // --- DATA: Contenido del Plan de Estudio ---
+        const studyPlanData = [
+            {
+                day: 1,
+                title: "Introducción a Angular y su Arquitectura",
+                topics: [
+                    {
+                        title: "¿Qué es Angular?",
+                        content: "Angular es un framework de desarrollo para crear aplicaciones web de una sola página (SPA - Single Page Application) del lado del cliente. Está escrito en TypeScript y es mantenido por Google. Proporciona una estructura sólida para construir aplicaciones complejas y escalables."
+                    },
+                    {
+                        title: "Arquitectura Principal: Bloques de Construcción",
+                        content: "La arquitectura de Angular se basa en 8 conceptos fundamentales:",
+                        subtopics: [
+                            { title: "Módulos (NgModules)", description: "Son contenedores que agrupan componentes, directivas, pipes y servicios relacionados. Una aplicación tiene al menos un módulo raíz, `AppModule`." },
+                            { title: "Componentes", description: "Son las piezas fundamentales de la UI. Cada componente controla una porción de la pantalla (una vista) y consiste en una clase TypeScript, una plantilla HTML y estilos CSS." },
+                            { title: "Plantillas (Templates)", description: "Es el HTML de un componente. Define cómo se renderiza el componente en la pantalla." },
+                            { title: "Directivas", description: "Añaden comportamiento extra a los elementos del DOM. Hay dos tipos: estructurales (como `*ngIf`) y de atributo (como `[ngClass]`)" },
+                            { title: "Data Binding", description: "Es la comunicación entre la plantilla y la clase del componente. Permite sincronizar datos." },
+                            { title: "Servicios", description: "Son clases diseñadas para una tarea específica (ej: obtener datos de un servidor). No están ligadas a la vista y se comparten mediante Inyección de Dependencias." },
+                            { title: "Inyección de Dependencias (DI)", description: "Es un patrón de diseño que permite a una clase recibir sus dependencias desde una fuente externa en lugar de crearlas ella misma. Facilita el desacoplamiento y las pruebas." },
+                            { title: "Routing", description: "Permite la navegación entre diferentes vistas (componentes) de la aplicación." }
+                        ],
+                        example: {
+                            title: "Ejemplo de un Componente Básico",
+                            code: `
+// app.component.ts (Clase TypeScript)
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root', // Cómo se usa en el HTML: <app-root></app-root>
+  templateUrl: './app.component.html', // Archivo de la plantilla
+  styleUrls: ['./app.component.css'] // Archivos de estilo
+})
+export class AppComponent {
+  title = 'Mi Primera App en Angular';
+}
+
+// app.component.html (Plantilla HTML)
+<h1>¡Bienvenido a {{ title }}!</h1>
+                            `
+                        }
+                    }
+                ],
+                quiz: [
+                    { question: "¿Cuál es el bloque de construcción principal en Angular que controla una vista (una porción de la pantalla)?", options: ["Módulo", "Servicio", "Componente", "Directiva"], answer: 2, explanation: "Los Componentes son el pilar de la UI en Angular. Cada uno controla una parte de la interfaz y encapsula su lógica, plantilla y estilos." },
+                    { question: "¿Qué concepto de Angular permite que las clases reciban sus dependencias (como servicios) en lugar de crearlas ellas mismas?", options: ["Data Binding", "Inyección de Dependencias", "Routing", "Plantillas"], answer: 1, explanation: "La Inyección de Dependencias (DI) es el mecanismo que Angular usa para proveer a las clases de las instancias que necesitan, promoviendo un código desacoplado y fácil de probar." },
+                    { question: "El módulo raíz de toda aplicación Angular se llama convencionalmente...", options: ["MainModule", "RootModule", "CoreModule", "AppModule"], answer: 3, explanation: "Por convención, la CLI de Angular crea un `AppModule` que sirve como el punto de entrada para organizar la aplicación." },
+                    { question: "Si quieres compartir una lógica para obtener datos de una API a través de varios componentes, ¿qué deberías crear?", options: ["Un Componente", "Un Servicio", "Una Directiva", "Un Módulo"], answer: 1, explanation: "Los Servicios son perfectos para encapsular lógica de negocio o de acceso a datos que no está atada a una vista específica y que puede ser reutilizada." },
+                    { question: "¿Para qué sirve el 'Routing' en Angular?", options: ["Para estilizar componentes", "Para manejar la navegación entre vistas", "Para validar formularios", "Para crear animaciones"], answer: 1, explanation: "El Router de Angular permite definir rutas de navegación, asociando una URL a un componente específico, lo que es clave en las SPAs." },
+                    { question: "El conjunto de HTML, CSS y TypeScript que define una parte de la interfaz de usuario se conoce como:", options: ["Servicio", "Módulo", "Componente", "Inyector"], answer: 2, explanation: "Un Componente es la combinación de una plantilla (HTML), estilos (CSS) y una clase (TypeScript) que trabajan juntos para renderizar una vista." }
+                ]
+            },
+            {
+                day: 2,
+                title: "Componentes, Plantillas y Data Binding",
+                topics: [
+                    { title: "Decorador @Component", content: "Es una función de TypeScript que toma un objeto de metadatos para configurar un componente.", subtopics: [ { title: "selector", description: "Un selector CSS que le dice a Angular cómo encontrar y renderizar este componente en una plantilla padre. Ej: 'app-mi-componente'." }, { title: "templateUrl", description: "La ruta al archivo HTML que define la vista del componente." }, { title: "styleUrls", description: "Un array de rutas a los archivos CSS para el componente." }, ] },
+                    { title: "Data Binding: Unidireccional", content: "La información fluye en una sola dirección: de la clase del componente a la plantilla.", subtopics: [ { title: "Interpolación `{{ ... }}`", description: "Muestra el valor de una propiedad del componente como texto en la plantilla. Angular lo convierte a string." }, { title: "Property Binding `[propiedad]`", description: "Enlaza el valor de una propiedad del componente a una propiedad de un elemento del DOM (ej: el `src` de una imagen)." } ], example: { title: "Ejemplo de Interpolación y Property Binding", code: `// mi-componente.ts\nexport class MiComponente {\n  nombreUsuario: string = 'Ana';\n  urlLogo: string = 'path/a/mi/logo.png';\n  isDisabled: boolean = true;\n}\n\n// mi-componente.html\n<p>Hola, {{ nombreUsuario }}!</p>\n\n<img [src]="urlLogo" alt="Logo de la empresa">\n\n<button [disabled]="isDisabled">No me puedes clickear</button>` } }
+                ],
+                quiz: [
+                    { question: "¿Qué sintaxis se utiliza para mostrar el valor de una propiedad de la clase en la plantilla HTML?", options: ["[propiedad]", "(evento)", "{{ propiedad }}", "*directiva"], answer: 2, explanation: "La interpolación, con la sintaxis de doble llave `{{ }}`, se usa para renderizar datos del componente como texto en la plantilla." },
+                    { question: "Para enlazar la propiedad `href` de un enlace `<a>` a una variable `miUrl` del componente, ¿cuál es la sintaxis correcta?", options: ['<a href="{{miUrl}}">', '<a (href)="miUrl">', '<a {href}="miUrl">', '<a [href]="miUrl">'], answer: 3, explanation: "El Property Binding usa corchetes `[ ]` para enlazar una propiedad del DOM a una propiedad del componente." },
+                    { question: "¿Qué metadato del decorador `@Component` define el nombre de la etiqueta HTML para usar el componente?", options: ["templateUrl", "selector", "styleUrls", "componentName"], answer: 1, explanation: "El `selector` define el nombre de la etiqueta personalizada (ej: 'app-user-profile') que se usará para instanciar el componente." },
+                    { question: "La interpolación `{{ valor }}` siempre convierte el `valor` a...", options: ["Un número", "Un string", "Un booleano", "Un objeto"], answer: 1, explanation: "Independientemente del tipo de dato original de la propiedad, la interpolación siempre lo mostrará como una cadena de texto en el HTML." },
+                    { question: "El Property Binding es una forma de data binding...", options: ["Bidireccional", "Unidireccional (de la vista al componente)", "Unidireccional (del componente a la vista)", "Sin dirección"], answer: 2, explanation: "El flujo de datos en el Property Binding va en una sola dirección: desde la clase TypeScript (la fuente de datos) hacia la plantilla HTML (el objetivo)." },
+                    { question: "¿Cuál de las siguientes NO es una propiedad de metadatos válida para el decorador `@Component`?", options: ["selector", "templateUrl", "providers", "data"], answer: 3, explanation: "`selector`, `templateUrl` y `providers` son metadatos válidos. `data` no es una propiedad reconocida por `@Component`." }
+                ]
+            },
+            {
+                day: 3,
+                title: "Directivas",
+                topics: [
+                    { title: "Directivas Estructurales", content: "Modifican la estructura del DOM añadiendo, quitando o manipulando elementos. Se reconocen por el asterisco `*`.", subtopics: [ { title: "*ngIf", description: "Añade o elimina un elemento del DOM basándose en una condición booleana." }, { title: "*ngFor", description: "Repite un elemento por cada ítem en una colección (array)." } ] },
+                    { title: "Directivas de Atributo", content: "Cambian la apariencia o el comportamiento de un elemento, componente u otra directiva. No alteran la estructura del DOM.", subtopics: [ { title: "[ngClass]", description: "Añade o quita clases CSS de forma dinámica." }, { title: "[ngStyle]", description: "Aplica estilos CSS en línea de forma dinámica." } ], example: { title: "Ejemplo de Directivas", code: `// mi-componente.ts\nexport class MiComponente {\n  isLoggedIn: boolean = true;\n  usuarios: string[] = ['Carlos', 'Laura', 'Pedro'];\n  esImportante: boolean = true;\n}\n\n// mi-componente.html\n<!-- *ngIf -->\n<div *ngIf="isLoggedIn">\n  <p>¡Bienvenido de nuevo!</p>\n</div>\n\n<!-- *ngFor -->\n<ul>\n  <li *ngFor="let usuario of usuarios">{{ usuario }}</li>\n</ul>\n\n<!-- [ngClass] y [ngStyle] -->\n<p [ngClass]="{ 'texto-rojo': esImportante, 'fondo-amarillo': esImportante }" \n   [ngStyle]="{ 'font-size.px': esImportante ? 20 : 16 }">\n   Este es un mensaje importante.\n</p>` } }
+                ],
+                quiz: [
+                    { question: "¿Qué directiva estructural usarías para renderizar una lista de elementos a partir de un array?", options: ["*ngIf", "[ngClass]", "*ngFor", "[ngStyle]"], answer: 2, explanation: "`*ngFor` es la directiva diseñada para iterar sobre colecciones y renderizar un bloque de HTML por cada elemento." },
+                    { question: "Un desarrollador quiere mostrar un `<div>` solo si una variable `sesionActiva` es `true`. ¿Cuál es la implementación correcta?", options: ['<div [ngIf]="sesionActiva">', '<div *ngIf="sesionActiva">', '<div if="sesionActiva">', '<div (ngIf)="sesionActiva">'], answer: 1, explanation: "`*ngIf` es una directiva estructural y su sintaxis requiere el prefijo de asterisco `*`. El asterisco es una 'azúcar sintáctica' para una estructura más compleja con `<ng-template>`." },
+                    { question: "Para aplicar la clase CSS 'error' a un input cuando la propiedad `tieneError` del componente es `true`, ¿qué usarías?", options: [`[ngClass]="{ 'error': tieneError }"`, `*ngClass="{ 'error': tieneError }"`, `(ngClass)="{ 'error': tieneError }"`, `class.error="tieneError"`], answer: 0, explanation: "`[ngClass]` es una directiva de atributo que permite añadir o quitar clases condicionalmente. La sintaxis de objeto es la más común." },
+                    { question: "¿Cuál es la principal diferencia entre una directiva estructural y una de atributo?", options: ["Las estructurales usan `*` y las de atributo `[]`", "Las estructurales modifican el DOM (añaden/quitan elementos) y las de atributo no", "Las de atributo solo funcionan con estilos", "Las estructurales solo funcionan con `<div>`"], answer: 1, explanation: "La diferencia fundamental es que las directivas estructurales alteran el layout del DOM, mientras que las de atributo solo cambian propiedades o el comportamiento de elementos ya existentes." },
+                    { question: "En la sintaxis `*ngFor=\"let item of items; let i = index\"`, ¿qué representa `i`?", options: ["El propio elemento `item`", "El array `items` completo", "El índice del elemento actual en el array", "Un valor booleano"], answer: 2, explanation: "`*ngFor` provee varias variables exportadas, como `index`, que contiene la posición del elemento actual en la iteración." },
+                    { question: "Si `*ngIf` evalúa a `false`, el elemento asociado...", options: ["Se oculta con `display: none`", "Se elimina completamente del DOM", "Se vuelve transparente", "Se deshabilita"], answer: 1, explanation: "A diferencia de simplemente ocultarlo, `*ngIf=\"false\"` quita el elemento y todos sus descendientes del DOM, lo cual es más eficiente." }
+                ]
+            },
+            {
+                day: 4,
+                title: "Data Binding Bidireccional y Eventos",
+                topics: [
+                    { title: "Event Binding `(evento)`", content: "Permite responder a eventos del DOM (como clics, pulsaciones de teclas, etc.) y ejecutar un método en la clase del componente. La información fluye de la plantilla al componente.", subtopics: [ { title: "Sintaxis", description: "Se usan paréntesis `()` alrededor del nombre del evento del DOM, como `(click)` o `(input)`." } ] },
+                    { title: "Two-Way Data Binding `[(ngModel)]`", content: "Es una combinación de Property Binding y Event Binding. Mantiene sincronizada una propiedad del componente con un valor de un elemento de formulario (como un input). La información fluye en ambas direcciones.", subtopics: [ { title: "Sintaxis", description: "Se usa la sintaxis `[()]`, apodada 'banana in a box'. `[(ngModel)]` es la directiva que lo implementa." }, { title: "Requisito", description: "Para usar `[(ngModel)]`, necesitas importar el `FormsModule` en tu `NgModule`." } ], example: { title: "Ejemplo de Eventos y Two-Way Binding", code: `// Para que [(ngModel)] funcione, importa FormsModule en tu app.module.ts\n\n// mi-componente.ts\nexport class MiComponente {\n  contador: number = 0;\n  nombre: string = 'Juan';\n\n  incrementar() {\n    this.contador++;\n  }\n}\n\n// mi-componente.html\n<!-- Event Binding -->\n<p>Contador: {{ contador }}</p>\n<button (click)="incrementar()">Incrementar</button>\n\n<!-- Two-Way Data Binding -->\n<input [(ngModel)]="nombre" type="text">\n<p>Hola, {{ nombre }}!</p>` } }
+                ],
+                quiz: [
+                    { question: "¿Qué sintaxis se utiliza para ejecutar un método `guardar()` cuando un usuario hace clic en un botón?", options: ['<button [click]="guardar()">', '<button {{click}}="guardar()">', '<button (click)="guardar()">', '<button *click="guardar()">'], answer: 2, explanation: "El Event Binding usa paréntesis `()` para encerrar el nombre del evento del DOM. Cuando el evento ocurre, se ejecuta la expresión a la derecha." },
+                    { question: "La sintaxis `[(ngModel)]` es un ejemplo de:", options: ["Property Binding", "Event Binding", "Interpolación", "Two-Way Data Binding"], answer: 3, explanation: "La sintaxis `[()]` ('banana in a box') es la firma del Two-Way Data Binding, combinando el flujo de datos en ambas direcciones." },
+                    { question: "¿Qué módulo es necesario importar para poder utilizar la directiva `[(ngModel)]`?", options: ["BrowserModule", "CommonModule", "HttpClientModule", "FormsModule"], answer: 3, explanation: "`FormsModule` contiene las directivas y proveedores necesarios para trabajar con formularios basados en plantillas, incluyendo `ngModel`." },
+                    { question: "El flujo de datos en el Event Binding `(click)` va...", options: ["Del componente a la plantilla", "De la plantilla al componente", "En ambas direcciones", "No hay flujo de datos"], answer: 1, explanation: "Un evento (como un clic) ocurre en la plantilla (la vista) y desencadena una acción en la clase del componente. Por lo tanto, el flujo va de la vista al modelo." },
+                    { question: 'Si tienes `<input (input)="onInputChange($event)">`, ¿qué es `$event`?', options: ["El valor del input", "El objeto de evento nativo del DOM", "El nombre del método", "Un booleano"], answer: 1, explanation: "Angular proporciona el objeto de evento del DOM a través de la variable local `$event`, permitiéndote acceder a propiedades como `$event.target.value`." },
+                    { question: "`[(ngModel)]` es en realidad una 'azúcar sintáctica' para la combinación de...", options: ["[value] y (change)", "[value] y (input)", "[property] y (event)", "[ngModel] y (ngModelChange)"], answer: 3, explanation: "Angular descompone `[(x)]` en el property binding `[x]` y el event binding `(xChange)`. Para `ngModel`, esto es `[ngModel]` y `(ngModelChange)`." }
+                ]
+            },
+            {
+                day: 5,
+                title: "Servicios e Inyección de Dependencias (DI)",
+                topics: [
+                    { title: "Propósito de un Servicio", content: "Los servicios son clases de TypeScript con un propósito bien definido. Se usan para compartir lógica de negocio, datos o funciones entre componentes, manteniendo los componentes ligeros y enfocados en la vista." },
+                    { title: "Decorador `@Injectable`", content: "Marca una clase como un servicio que puede ser gestionado por el inyector de dependencias de Angular.", subtopics: [ { title: "`providedIn: 'root'`", description: "Esta es la forma recomendada de registrar un servicio. Le dice a Angular que provea una única instancia (singleton) del servicio en toda la aplicación, haciéndolo disponible en cualquier lugar sin necesidad de añadirlo a los `providers` de un módulo." } ] },
+                    { title: "Inyección de Dependencias en Acción", content: "Para usar un servicio, simplemente lo declaras como una dependencia en el `constructor` del componente (u otro servicio) que lo necesita. Angular se encarga de crear y 'inyectar' la instancia.", example: { title: "Ejemplo de Servicio y DI", code: `// logger.service.ts\nimport { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root' // Disponible en toda la app\n})\nexport class LoggerService {\n  log(message: string) {\n    console.log(message);\n  }\n}\n\n// mi-componente.ts\nimport { Component } from '@angular/core';\nimport { LoggerService } from './logger.service';\n\n@Component({...})\nexport class MiComponente {\n  // Angular inyecta la instancia de LoggerService aquí\n  constructor(private logger: LoggerService) {}\n\n  saludar() {\n    this.logger.log('¡El componente ha saludado!');\n  }\n}` } }
+                ],
+                quiz: [
+                    { question: "¿Qué decorador se utiliza para definir una clase como un servicio en Angular?", options: ["@Component", "@NgModule", "@Directive", "@Injectable"], answer: 3, explanation: "`@Injectable()` es el decorador que le indica a Angular que una clase puede ser provista e inyectada como una dependencia." },
+                    { question: "¿Cuál es la forma estándar y recomendada de hacer que un servicio esté disponible en toda la aplicación?", options: ["Añadirlo a los `providers` de cada componente", "Usar `providedIn: 'root'` en el decorador `@Injectable`", "Exportarlo desde `AppModule`", "Crear una instancia global manualmente"], answer: 1, explanation: "`providedIn: 'root'` permite que el servicio sea 'tree-shakable' (eliminado si no se usa) y lo registra como un singleton a nivel de aplicación de la manera más eficiente." },
+                    { question: "¿Cómo se solicita una instancia de un servicio dentro de un componente?", options: ["Llamando a `new MiServicio()`", "Declarando el servicio en el `constructor` del componente", "Usando `import` en la plantilla", "Añadiéndolo a la propiedad `imports` del componente"], answer: 1, explanation: "La Inyección de Dependencias funciona a través del constructor. Al tipar un parámetro del constructor con la clase del servicio, Angular sabe qué instancia inyectar." },
+                    { question: "Un servicio registrado con `providedIn: 'root'` es, por defecto, un...", options: ["Singleton", "Prototipo", "Factory", "Objeto estático"], answer: 0, explanation: "Singleton significa que solo existirá una única instancia del servicio en toda la aplicación, la cual es compartida entre todos los componentes y servicios que la inyecten." },
+                    { question: "¿Por qué es una buena práctica usar servicios en lugar de poner toda la lógica en los componentes?", options: ["Porque los servicios son más rápidos", "Para mejorar la reutilización de código y la organización", "Porque los componentes no pueden hacer llamadas HTTP", "Porque es un requisito de TypeScript"], answer: 1, explanation: "Los servicios ayudan a seguir el principio de responsabilidad única (SRP), haciendo que los componentes se centren en la presentación y los servicios en la lógica, lo que mejora la mantenibilidad, testeabilidad y reutilización del código." },
+                    { question: "El mecanismo que se encarga de crear y entregar las dependencias en Angular se llama...", options: ["Compilador", "Router", "Inyector", "Módulo"], answer: 2, explanation: "El Inyector de Dependencias es el responsable de gestionar las instancias de los servicios y proveerlas a las clases que las solicitan." }
+                ]
+            },
+            {
+                day: 6,
+                title: "Routing Básico",
+                topics: [
+                    { title: "Conceptos Clave de Routing", content: "El routing permite a los usuarios navegar entre diferentes partes de la aplicación que corresponden a diferentes componentes.", subtopics: [
+                        { title: "RouterModule", description: "El módulo que contiene toda la funcionalidad del router. Se importa con `RouterModule.forRoot(routes)` en el módulo raíz." },
+                        { title: "Routes", description: "Un array de objetos de configuración de ruta. Cada objeto mapea una `path` (URL) a un `component`." },
+                        { title: "<router-outlet>", description: "Una directiva que actúa como un marcador de posición en la plantilla. Aquí es donde el router renderiza el componente correspondiente a la ruta activa." },
+                        { title: "routerLink", description: "Una directiva para crear enlaces de navegación. Es el equivalente de Angular a `href`, pero para rutas internas." }
+                    ]},
+                    { title: "Configuración de Rutas", content: "Generalmente se crea un archivo separado (`app-routing.module.ts`) para manejar la configuración de las rutas y mantener el `AppModule` limpio.", example: { title: "Ejemplo de Configuración de Routing", code: `
+// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' } // Redirige la ruta vacía a /home
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+// app.component.html (Plantilla principal)
+<nav>
+  <a routerLink="/home">Inicio</a>
+  <a routerLink="/about">Acerca de</a>
+</nav>
+
+<!-- Aquí se mostrará el componente de la ruta activa -->
+<router-outlet></router-outlet>
+`}}
+                ],
+                quiz: [
+                    { question: "¿Qué directiva se usa como marcador de posición para mostrar los componentes enrutados?", options: ["<router-view>", "<ng-content>", "<router-outlet>", "<ng-template>"], answer: 2, explanation: "`<router-outlet>` es el componente de Angular que actúa como el contenedor donde se renderizan los componentes de las rutas activas." },
+                    { question: "Para crear un enlace de navegación a la ruta '/products', ¿qué directiva usarías?", options: ['href="/products"', 'link="/products"', 'routerLink="/products"', 'route="/products"'], answer: 2, explanation: "`routerLink` es la directiva que se debe usar en lugar de `href` para la navegación interna, ya que se integra con el historial del navegador sin recargar la página." },
+                    { question: "En la configuración de rutas, ¿qué propiedad se usa para definir el segmento de URL?", options: ["url", "path", "route", "segment"], answer: 1, explanation: "La propiedad `path` en un objeto de ruta define la cadena de texto que corresponderá al segmento de la URL en el navegador." },
+                    { question: "La función `RouterModule.forRoot(routes)` debe ser llamada en...", options: ["Cada módulo que use routing", "El módulo raíz de la aplicación (AppModule)", "El componente principal (AppComponent)", "Un servicio de routing"], answer: 1, explanation: "`forRoot` se usa una sola vez en el módulo raíz para registrar los proveedores y directivas del router a nivel de aplicación. En módulos de funcionalidades se usa `forChild`." },
+                    { question: "En una definición de ruta, `{ path: '', redirectTo: '/dashboard', pathMatch: 'full' }`, ¿qué significa `pathMatch: 'full'`?", options: ["Que la ruta debe coincidir parcialmente", "Que la URL completa debe estar vacía para que la redirección funcione", "Que la redirección es permanente", "Que la ruta es la principal"], answer: 1, explanation: "`pathMatch: 'full'` exige que toda la URL coincida con el `path` vacío. Si fuera `'prefix'`, redirigiría cualquier ruta que comience con la cadena vacía (es decir, todas), lo cual suele ser un error." },
+                    { question: "¿Qué objeto de ruta usarías para manejar cualquier URL que no coincida con las rutas definidas?", options: ["{ path: '*', component: NotFoundComponent }", "{ path: 'any', component: NotFoundComponent }", "{ path: '**', component: NotFoundComponent }", "{ path: 'default', component: NotFoundComponent }"], answer: 2, explanation: "La ruta comodín `**` coincide con cualquier secuencia de segmentos de URL, por lo que siempre debe ser la última ruta en la configuración para capturar las URLs no encontradas (Error 404)." }
+                ]
+            },
+            {
+                day: 7,
+                title: "Ciclo de Vida del Componente",
+                topics: [
+                    { title: "Ganchos del Ciclo de Vida (Lifecycle Hooks)", content: "Angular ofrece 'ganchos' (hooks) que nos permiten ejecutar código en momentos clave de la vida de un componente, desde su creación hasta su destrucción. Se implementan como métodos de interfaces (ej: `OnInit`).", subtopics: [
+                        { title: "constructor()", description: "No es un hook de Angular, sino de TypeScript. Se ejecuta primero. Ideal para la inyección de dependencias, no para lógica compleja." },
+                        { title: "ngOnInit()", description: "Se ejecuta una vez, después de que Angular ha inicializado las propiedades del componente vinculadas a datos (@Input). Es el lugar perfecto para la lógica de inicialización (ej. llamadas a APIs)." },
+                        { title: "ngOnChanges()", description: "Se ejecuta antes de `ngOnInit` y cada vez que el valor de una propiedad de entrada (`@Input`) cambia. Recibe un objeto `SimpleChanges` con los valores actuales y anteriores." },
+                        { title: "ngOnDestroy()", description: "Se ejecuta justo antes de que Angular destruya el componente. Es fundamental para tareas de limpieza, como desuscribirse de Observables, para evitar fugas de memoria." }
+                    ]},
+                    { title: "Implementación de Hooks", content: "Para usar un hook, la clase del componente debe implementar la interfaz correspondiente y definir el método.", example: { title: "Ejemplo de Ciclo de Vida", code: `
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+@Component({ ... })
+export class LifecycleDemoComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() data: string;
+
+  constructor() {
+    console.log('CONSTRUCTOR: Componente creado, "data" aún no está disponible.');
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('NGONCHANGES: "data" ha cambiado.', changes);
+  }
+
+  ngOnInit() {
+    console.log('NGONINIT: Componente inicializado, "data" ya está disponible. Valor:', this.data);
+    // Lugar ideal para hacer una llamada a una API
+  }
+
+  ngOnDestroy() {
+    console.log('NGONDESTROY: Componente a punto de ser destruido. Limpiando...');
+    // Lugar ideal para desuscribirse de observables
+  }
+}
+`}}
+                ],
+                quiz: [
+                    { question: "¿Qué hook del ciclo de vida se ejecuta solo una vez, después de que las propiedades de entrada (@Input) han sido inicializadas?", options: ["constructor", "ngOnChanges", "ngOnInit", "ngOnDestroy"], answer: 2, explanation: "`ngOnInit` es el hook estándar para la lógica de inicialización que depende de los datos de entrada, ya que garantiza que estos ya han sido establecidos por Angular." },
+                    { question: "¿Cuál es el mejor lugar para desuscribirse de un Observable para prevenir fugas de memoria?", options: ["constructor", "ngOnDestroy", "ngOnInit", "En un servicio"], answer: 1, explanation: "`ngOnDestroy` se ejecuta justo antes de que el componente sea eliminado del DOM, lo que lo convierte en el momento perfecto para realizar tareas de limpieza." },
+                    { question: "Si tienes un componente con un `@Input`, ¿qué hook se ejecutará cada vez que el valor de ese input cambie desde el componente padre?", options: ["ngOnInit", "ngOnChanges", "ngAfterViewInit", "ngDoCheck"], answer: 1, explanation: "`ngOnChanges` está diseñado específicamente para reaccionar a los cambios en las propiedades de entrada (`@Input`)." },
+                    { question: "El `constructor` de un componente se ejecuta...", options: ["Después de `ngOnInit`", "Antes que cualquier hook de Angular", "Solo si no hay `ngOnInit`", "Cuando el componente es destruido"], answer: 1, explanation: "El constructor es parte de la instanciación de la clase de JavaScript/TypeScript, y siempre se ejecuta primero, antes de que Angular procese los hooks de su ciclo de vida." },
+                    { question: "Para usar un hook como `ngOnInit`, la clase del componente debe...", options: ["Extender de `Angular.Component`", "Tener un decorador `@Hook`", "Implementar la interfaz `OnInit`", "Ser declarada como `async`"], answer: 2, explanation: "Implementar la interfaz (ej: `implements OnInit`) es una buena práctica porque asegura que el método se escriba correctamente y ayuda a que el código sea más claro, aunque técnicamente solo con definir el método funcionaría." },
+                    { question: "Dentro de `ngOnChanges(changes: SimpleChanges)`, ¿qué contiene el objeto `changes`?", options: ["Solo el nuevo valor de las propiedades", "Solo el valor anterior de las propiedades", "Un objeto con el valor actual, anterior y si es el primer cambio para cada @Input modificado", "Un array con los nombres de las propiedades que cambiaron"], answer: 2, explanation: "El objeto `SimpleChanges` es un mapa donde cada clave es el nombre de un @Input que cambió, y su valor es un objeto `SimpleChange` con las propiedades `currentValue`, `previousValue` y `firstChange`." }
+                ]
+            },
+            {
+                day: 8,
+                title: "Pipes",
+                topics: [
+                    { title: "¿Qué son los Pipes?", content: "Los pipes son una forma sencilla de transformar datos en la plantilla HTML. Toman datos como entrada y los devuelven en un formato deseado, como formatear una fecha o convertir texto a mayúsculas, sin cambiar el valor original en el componente.", subtopics: [
+                        { title: "Sintaxis", description: "Se usa el carácter de tubería `|` seguido del nombre del pipe. Ej: `{{ miFecha | date }}`." },
+                        { title: "Pipes con Parámetros", description: "Algunos pipes aceptan parámetros para personalizar la transformación, usando dos puntos `:`. Ej: `{{ miFecha | date:'shortDate' }}` o `{{ miNumero | number:'1.2-2' }}`." },
+                        { title: "Encadenamiento de Pipes", description: "Se pueden aplicar múltiples pipes en secuencia. Ej: `{{ miTexto | slice:0:10 | uppercase }}`." }
+                    ]},
+                    { title: "Pipes Comunes y Personalizados", content: "Angular viene con varios pipes incorporados. También puedes crear los tuyos.", subtopics: [
+                        { title: "Pipes Incorporados", description: "`UppercasePipe`, `LowercasePipe`, `TitleCasePipe`, `DatePipe`, `CurrencyPipe`, `DecimalPipe`, `PercentPipe`, `JsonPipe`, `SlicePipe`." },
+                        { title: "Pipes Personalizados", description: "Se crean con el decorador `@Pipe` y deben implementar la interfaz `PipeTransform`, que tiene un método `transform()`." }
+                    ], example: { title: "Ejemplo de Pipes", code: `
+// mi-componente.ts
+export class MiComponente {
+  hoy: Date = new Date();
+  precio: number = 123.45;
+  descripcion: string = "Este es un texto muy largo que necesita ser acortado.";
+}
+
+// resumen.pipe.ts (Pipe Personalizado)
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({ name: 'resumen' })
+export class ResumenPipe implements PipeTransform {
+  transform(value: string, limit?: number): string {
+    if (!value) return null;
+    let actualLimit = (limit) ? limit : 20;
+    return value.substr(0, actualLimit) + '...';
+  }
+}
+
+// mi-componente.html
+<p>Fecha: {{ hoy | date:'fullDate' }}</p>
+<p>Precio: {{ precio | currency:'COP':'symbol':'1.0-0' }}</p>
+<p>Descripción: {{ descripcion | resumen:15 }}</p>
+`}}
+                ],
+                quiz: [
+                    { question: "¿Qué carácter se utiliza para aplicar un pipe a un valor en una plantilla?", options: [":", "&", "|", "@"], answer: 2, explanation: "El carácter de tubería `|` es el que invoca a un pipe, pasando el valor de la izquierda como entrada a la función `transform` del pipe de la derecha." },
+                    { question: "Si quieres mostrar un número `total` como moneda en euros, ¿cuál sería la sintaxis más probable?", options: ["{{ total | currency:'EUR' }}", "{{ total | format:'currency.eur' }}", "{{ total.toCurrency('EUR') }}", "{{ toCurrency(total, 'EUR') }}"], answer: 0, explanation: "El `CurrencyPipe` acepta como primer parámetro el código de la moneda (ej: 'EUR', 'USD', 'COP')." },
+                    { question: "Para crear un pipe personalizado, la clase debe implementar la interfaz...", options: ["Pipe", "Transform", "PipeTransform", "CustomPipe"], answer: 2, explanation: "La interfaz `PipeTransform` obliga a la clase a tener un método `transform(value: any, ...args: any[]): any`, que es donde se define la lógica de la transformación." },
+                    { question: "Los pipes transforman el valor...", options: ["Solo en la vista (plantilla)", "Permanentemente en la clase del componente", "Tanto en la vista como en el componente", "En la base de datos"], answer: 0, explanation: "Una característica clave de los pipes es que son para la presentación. No mutan el valor original de la propiedad en el componente, solo afectan a cómo se muestra." },
+                    { question: "En `{{ miValor | miPipe:arg1:arg2 }}`, ¿cómo se reciben `arg1` y `arg2` en el método `transform` del pipe?", options: ["Como un array `[arg1, arg2]`", "Como parámetros adicionales después del valor: `transform(value, arg1, arg2)`", "Como un objeto `{ arg1, arg2 }`", "No se pueden pasar múltiples argumentos"], answer: 1, explanation: "El método `transform` está definido para aceptar el valor a transformar como primer argumento, y luego cualquier parámetro adicional del pipe como argumentos subsiguientes." },
+                    { question: "El pipe `async` se utiliza para...", options: ["Hacer que una función se ejecute de forma asíncrona", "Formatear fechas asíncronas", "Suscribirse automáticamente a un Observable o Promesa y devolver el último valor emitido", "Convertir un valor a JSON de forma asíncrona"], answer: 2, explanation: "El pipe `async` es extremadamente útil para manejar Observables directamente en la plantilla, ya que se suscribe y desuscribe automáticamente, evitando fugas de memoria." }
+                ]
+            },
+            {
+                day: 9,
+                title: "Formularios (Template-Driven)",
+                topics: [
+                    { title: "Formularios Basados en Plantilla", content: "En este enfoque, la lógica, validaciones y controles del formulario se definen principalmente en la plantilla HTML utilizando directivas.", subtopics: [
+                        { title: "NgForm", description: "Una directiva que se aplica automáticamente a cualquier etiqueta `<form>`. Crea un objeto `FormGroup` y lo vincula al formulario para rastrear su estado." },
+                        { title: "NgModel", description: "Usado con `[(ngModel)]`, crea un control (`FormControl`) para cada input y lo registra en el `NgForm` padre." },
+                        { title: "Variables de Referencia de Plantilla", description: 'Se usan para obtener una referencia al `NgForm`. Ej: `<form #miForm="ngForm">`.' },
+                        { title: "Estados de Validación", description: "Angular rastrea el estado de cada control y del formulario: `valid`/`invalid`, `pristine`/`dirty` (tocado/sin tocar), `touched`/`untouched` (visitado/no visitado)." }
+                    ]},
+                    { title: "Validación", content: "Se pueden usar atributos de validación de HTML5 como `required` o `minlength`. Angular los reconoce y los usa para actualizar el estado del formulario.", example: { title: "Ejemplo de Formulario Template-Driven", code: `
+// mi-componente.ts
+export class MiComponente {
+  onSubmit(form: any) {
+    if (form.valid) {
+      console.log('Formulario enviado:', form.value);
+    } else {
+      console.log('Formulario inválido');
+    }
+  }
+}
+
+// mi-componente.html
+<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"
+           ngModel #email="ngModel" required email>
+    
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert">
+      <div *ngIf="email.errors?.['required']">El email es requerido.</div>
+      <div *ngIf="email.errors?.['email']">El email no es válido.</div>
+    </div>
+  </div>
+  
+  <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+</form>
+`}}
+                ],
+                quiz: [
+                    { question: "En los formularios Template-Driven, la mayor parte de la lógica se define en...", options: ["El archivo TypeScript del componente", "Un servicio de formularios", "La plantilla HTML", "El archivo CSS"], answer: 2, explanation: "La característica que define a los formularios 'Template-Driven' es que la configuración y validación se declaran directamente en el HTML usando directivas y atributos." },
+                    { question: "Para obtener una referencia al estado completo del formulario en la plantilla, ¿qué sintaxis usarías?", options: ['<form #miForm>', '<form name="miForm">', '<form id="miForm">', '<form #miForm="ngForm">'], answer: 3, explanation: "La sintaxis `#variable=\"ngForm\"` exporta la directiva `NgForm` a una variable de referencia de plantilla, permitiéndote acceder a sus propiedades como `miForm.valid` o `miForm.value`." },
+                    { question: "Un campo de formulario que no ha sido modificado por el usuario tiene el estado...", options: ["valid", "untouched", "pristine", "empty"], answer: 2, explanation: "`pristine` indica que el valor del control no ha cambiado desde su inicialización. En cuanto el usuario escribe algo, cambia a `dirty`." },
+                    { question: "Para deshabilitar un botón de envío si el formulario no es válido, usarías...", options: ['[disabled]="!form.valid"', '[disabled]="form.invalid"', '[disabled]="form.pristine"', 'disabled="invalid"'], answer: 1, explanation: "La propiedad `invalid` del `NgForm` es un booleano que es `true` si alguna de sus validaciones falla. Enlazar esta propiedad a `[disabled]` es una práctica común." },
+                    { question: "La directiva `ngModel` sin corchetes ni paréntesis solo funciona si...", options: ["Está dentro de un `<form>`", "Tiene un atributo `name`", "Está dentro de un `<form>` y tiene un atributo `name`", "Nunca funciona así"], answer: 2, explanation: "Para que `ngModel` registre un control en el `NgForm`, el input debe tener un atributo `name` único dentro del formulario." },
+                    { question: "Para mostrar un mensaje de error solo cuando el campo ha sido 'tocado' por el usuario, ¿qué combinación de estados verificarías?", options: ["invalid && pristine", "valid && dirty", "invalid && touched", "valid && untouched"], answer: 2, explanation: "Verificar `invalid && (dirty || touched)` es la mejor práctica. Esto asegura que los mensajes de error no aparezcan antes de que el usuario haya interactuado con el campo, mejorando la experiencia de usuario." }
+                ]
+            },
+            {
+                day: 10,
+                title: "Comunicación HTTP",
+                topics: [
+                    { title: "HttpClient", content: "Angular proporciona un mecanismo simplificado para la comunicación HTTP, el `HttpClient`. Es un servicio que se puede inyectar para realizar peticiones a un servidor backend.", subtopics: [
+                        { title: "HttpClientModule", description: "Antes de poder usar `HttpClient`, debes importar `HttpClientModule` en el `imports` array de tu módulo raíz (`AppModule`)." },
+                        { title: "Inyectar HttpClient", description: "Una vez importado el módulo, puedes inyectar el servicio `HttpClient` en el constructor de tus componentes o servicios." },
+                        { title: "Observables", description: "Los métodos de `HttpClient` (como `get()`, `post()`, etc.) no devuelven los datos directamente. Devuelven un `Observable`. Los Observables son flujos de datos a los que te tienes que 'suscribir' para recibir los valores." },
+                        { title: "El método subscribe()", description: "Para ejecutar la petición HTTP y recibir los datos (o el error), debes llamar al método `.subscribe()` del Observable devuelto." }
+                    ]},
+                    { title: "Realizando una Petición GET", content: "Es la operación más común para solicitar datos de un servidor.", example: { title: "Ejemplo de HttpClient", code: `
+// app.module.ts
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    HttpClientModule // ¡Importar aquí!
+  ],
+  ...
+})
+export class AppModule { }
+
+// user.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private apiUrl = 'https://jsonplaceholder.typicode.com/users';
+
+  constructor(private http: HttpClient) { }
+
+  getUsers() {
+    return this.http.get<any[]>(this.apiUrl); // Devuelve un Observable
+  }
+}
+
+// user-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { UserService } from './user.service';
+
+@Component({ ... })
+export class UserListComponent implements OnInit {
+  users: any[];
+
+  constructor(private userService: UserService) { }
+
+  ngOnInit() {
+    this.userService.getUsers().subscribe(data => {
+      this.users = data; // La petición se hace y los datos se asignan aquí
+    });
+  }
+}
+`}}
+                ],
+                quiz: [
+                    { question: "¿Qué módulo debes importar para usar el servicio `HttpClient`?", options: ["HttpModule", "BrowserModule", "HttpClientModule", "CommonModule"], answer: 2, explanation: "`HttpClientModule` es el módulo que contiene todos los proveedores y servicios necesarios para realizar peticiones HTTP con el cliente moderno de Angular." },
+                    { question: "Los métodos de `HttpClient`, como `get()`, devuelven...", options: ["Los datos en formato JSON", "Una Promesa", "Un Observable", "Un string"], answer: 2, explanation: "Toda la API de `HttpClient` está basada en Observables de RxJS. Esto permite manejar operaciones asíncronas de forma muy potente (cancelar, reintentar, etc.)." },
+                    { question: "Para que una petición HTTP se realice, ¿qué método debes llamar en el Observable devuelto?", options: [".then()", ".execute()", ".run()", ".subscribe()"], answer: 3, explanation: "Una característica clave de los Observables de `HttpClient` es que son 'fríos' (cold). La petición HTTP no se dispara hasta que alguien se suscribe a ella con `.subscribe()`." },
+                    { question: "El mejor lugar para realizar una llamada a una API para inicializar los datos de un componente es...", options: ["El constructor", "ngOnInit()", "ngOnChanges()", "La plantilla HTML"], answer: 1, explanation: "`ngOnInit()` se ejecuta una sola vez cuando el componente está listo, lo que lo convierte en el lugar ideal para la lógica de inicialización, como la obtención de datos iniciales." },
+                    { question: "En `.subscribe(datos => { ... }, error => { ... })`, el segundo argumento de la función `subscribe` maneja...", options: ["La finalización del Observable", "Los errores de la petición HTTP", "El siguiente valor emitido", "La cancelación de la petición"], answer: 1, explanation: "El método `subscribe` puede recibir hasta tres funciones como argumento: la primera para los datos exitosos (next), la segunda para los errores (error), y la tercera para cuando el Observable se completa (complete)." },
+                    { question: "Al usar `http.get<User[]>(url)`, la parte `<User[]>` se utiliza para...", options: ["Convertir la respuesta a un array", "Validar que la respuesta sea un array de Usuarios", "Proporcionar tipado estático a la respuesta, ayudando al autocompletado y la seguridad de tipos", "Enviar un array de Usuarios al servidor"], answer: 2, explanation: "Usar genéricos (`<T>`) con los métodos de `HttpClient` es una excelente práctica de TypeScript que le dice al compilador qué forma se espera que tengan los datos de la respuesta, mejorando la robustez del código." }
+                ]
+            }
+        ];
+        
+        // --- LÓGICA de la Aplicación ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const planContainer = document.getElementById('study-plan');
+
+            // Generar el HTML del plan de estudio
+            studyPlanData.forEach((dayData, dayIndex) => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+                
+                // --- Cabecera del Acordeón ---
+                const header = document.createElement('div');
+                header.className = 'p-4 md:p-6 flex justify-between items-center cursor-pointer bg-gray-50 hover:bg-gray-200 transition-colors';
+                header.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="text-blue-600 font-bold mr-4">Día ${dayData.day}</span>
+                        <h2 class="text-xl font-semibold text-gray-800">${dayData.title}</h2>
+                    </div>
+                    <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                `;
+                
+                // --- Contenido del Acordeón ---
+                const content = document.createElement('div');
+                content.className = 'accordion-content';
+
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'p-4 md:p-6 border-t border-gray-200 prose max-w-none';
+
+                // Generar Tópicos de estudio
+                dayData.topics.forEach(topic => {
+                    contentWrapper.innerHTML += `<h3>${topic.title}</h3><p>${topic.content}</p>`;
+                    if (topic.subtopics) {
+                        const subtopicList = topic.subtopics.map(st => `<li><strong>${st.title}:</strong> ${st.description}</li>`).join('');
+                        contentWrapper.innerHTML += `<ul class="list-disc pl-5">${subtopicList}</ul>`;
+                    }
+                    if (topic.example) {
+                        contentWrapper.innerHTML += `<h4>${topic.example.title}</h4><pre><code>${topic.example.code.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`;
+                    }
+                });
+
+                // Separador antes del Cuestionario
+                contentWrapper.innerHTML += '<hr class="my-6">';
+
+                // Generar Cuestionario
+                const quizContainer = document.createElement('div');
+                quizContainer.innerHTML = '<h3 class="text-2xl font-bold mb-4">Cuestionario Interactivo</h3>';
+                
+                dayData.quiz.forEach((q, qIndex) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mb-6';
+                    questionDiv.id = `q-container-${dayIndex}-${qIndex}`;
+                    questionDiv.innerHTML = `<p class="font-semibold mb-2">${qIndex + 1}. ${q.question}</p>`;
+                    
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'space-y-2';
+                    
+                    q.options.forEach((opt, optIndex) => {
+                        optionsDiv.innerHTML += `
+                            <label class="flex items-center p-3 rounded-md border border-gray-300 hover:bg-gray-100 cursor-pointer transition-colors">
+                                <input type="radio" name="q-${dayIndex}-${qIndex}" value="${optIndex}" class="mr-3">
+                                <span>${opt.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                            </label>
+                        `;
+                    });
+                    questionDiv.appendChild(optionsDiv);
+                    quizContainer.appendChild(questionDiv);
+                });
+
+                // Botón para calificar y área de resultados
+                const gradeButton = document.createElement('button');
+                gradeButton.textContent = 'Calificar Cuestionario';
+                gradeButton.className = 'mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors';
+                
+                const resultsDiv = document.createElement('div');
+                resultsDiv.id = `results-${dayIndex}`;
+                resultsDiv.className = 'mt-6 hidden';
+
+                quizContainer.appendChild(gradeButton);
+                quizContainer.appendChild(resultsDiv);
+                
+                contentWrapper.appendChild(quizContainer);
+                content.appendChild(contentWrapper);
+                dayElement.appendChild(header);
+                dayElement.appendChild(content);
+                planContainer.appendChild(dayElement);
+
+                // --- Event Listeners ---
+                header.addEventListener('click', () => {
+                    const svg = header.querySelector('svg');
+                    const allContents = document.querySelectorAll('.accordion-content');
+                    const allSvgs = document.querySelectorAll('#study-plan svg');
+
+                    const wasOpen = content.style.maxHeight;
+
+                    // Cerrar todos los acordeones
+                    allContents.forEach(item => item.style.maxHeight = null);
+                    allSvgs.forEach(item => item.style.transform = 'rotate(0deg)');
+                    
+                    // Abrir el actual si estaba cerrado
+                    if (!wasOpen) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        svg.style.transform = 'rotate(180deg)';
+                    }
+                });
+
+                gradeButton.addEventListener('click', () => {
+                    let score = 0;
+                    let resultsHTML = '';
+                    
+                    dayData.quiz.forEach((q, qIndex) => {
+                        const allOptions = document.querySelectorAll(`input[name="q-${dayIndex}-${qIndex}"]`);
+                        const selectedOption = document.querySelector(`input[name="q-${dayIndex}-${qIndex}"]:checked`);
+                        
+                        // Deshabilitar todas las opciones para esta pregunta
+                        allOptions.forEach(radio => {
+                            radio.disabled = true;
+                        });
+
+                        if (selectedOption) {
+                            const userAnswer = parseInt(selectedOption.value);
+                            const isCorrect = userAnswer === q.answer;
+                            const selectedLabel = selectedOption.closest('label');
+
+                            if (isCorrect) {
+                                score++;
+                                selectedLabel.classList.add('label-correct');
+                            } else {
+                                selectedLabel.classList.add('label-incorrect');
+                                // Marcar también la correcta
+                                const correctOption = allOptions[q.answer];
+                                if(correctOption){
+                                   correctOption.closest('label').classList.add('label-correct');
+                                }
+                            }
+
+                            resultsHTML += `
+                                <div class="p-4 mb-4 rounded-lg ${isCorrect ? 'bg-green-50 result-correct' : 'bg-red-50 result-incorrect'}">
+                                    <p class="font-bold">${q.question.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+                                    <p class="mt-2 text-sm">Tu respuesta: <span class="font-semibold">${q.options[userAnswer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span> ${isCorrect ? '✅' : '❌'}</p>
+                                    ${!isCorrect ? `<p class="text-sm">Respuesta correcta: <span class="font-semibold">${q.options[q.answer].replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span></p>` : ''}
+                                    <p class="mt-2 pt-2 border-t border-gray-300 text-sm text-gray-700"><strong>Explicación:</strong> ${q.explanation}</p>
+                                </div>
+                            `;
+                        } else {
+                             resultsHTML += `
+                                <div class="p-4 mb-4 rounded-lg bg-yellow-50 border-l-4 border-yellow-400">
+                                    <p class="font-bold">${q.question.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+                                    <p class="mt-2 text-sm text-gray-700"><strong>⚠️ No has respondido esta pregunta.</strong></p>
+                                    <p class="mt-2 pt-2 border-t border-gray-300 text-sm text-gray-700"><strong>Explicación:</strong> ${q.explanation}</p>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    const totalQuestions = dayData.quiz.length;
+                    const percentage = Math.round((score / totalQuestions) * 100);
+                    
+                    resultsDiv.innerHTML = `<h4 class="text-xl font-bold mb-4">Resultados: ${score} de ${totalQuestions} correctas (${percentage}%)</h4> ${resultsHTML}`;
+                    resultsDiv.classList.remove('hidden');
+
+                    // **FIX:** Recalcular el alto del acordeón para mostrar los resultados
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
